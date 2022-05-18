@@ -12,33 +12,31 @@ class DataFrame:
 
     def average_income(self):
         city_data = DataFrame.chosen_city_data(self)
-
         city_data['Total Salary'] = city_data['Salary'] * city_data['Salaries Reported']
-        print(city_data['Total Salary'].head())
+        salaries_reported = city_data.groupby('Job Title')['Salaries Reported'].sum()
+        total_salary = city_data.groupby('Job Title')['Total Salary'].sum()
+        position = salaries_reported.index.tolist()
+        amount = salaries_reported.tolist()
+        salary = total_salary.tolist()
+        average = [i / j for i, j in zip(salary, amount)]
+        averages = dict(zip(position, average))
+        return averages
 
-        # number = city_data['Job Title'].value_counts()
-        # positions = number.index.tolist()
-        # for idx in positions:
+    def highest_paying_companies(self):
+        ...
+
+    def salary_in_comparison(self):
+        ...
+
+    def most_profitable_position(self):
+        ...
+
+        # todict = city_data.to_dict('records')
+        # for idx in todict:
         #     print(idx)
-        #     job_data = city_data.loc[city_data['Job Title'] == idx]
-            # print(job_data['Salaries Reported'])
-            # print(job_data['Salary'])
-        # amounts = number.tolist()
-        # positions_and_amounts = dict(zip(positions, amounts))
-        # print(positions_and_amounts)
-        job_titles = []
-        salaries = []
-        for idx, row in city_data.iterrows():
-            job_title = row['Job Title']
-            job_titles.append(job_title)
-            salary = row["Salary"]
-            salaries.append(salary)
-        positions_and_salaries = dict(zip(job_titles, salaries))
-        return positions_and_salaries
 
 
 data = DataFrame('New Delhi')
 
 positions_and_averages = data.average_income()
 print(positions_and_averages)
-
