@@ -1,18 +1,39 @@
 import pandas as pd
-import numpy as np
-import csv
 import pprint
 
-data_1 = pd.read_csv("/Users/kubagrabarczyk/Desktop/final_project_db.csv", on_bad_lines='skip')
+df = pd.read_csv("/Users/kubagrabarczyk/Desktop/final_project_db.csv", delimiter=";", on_bad_lines='skip')
 # Does not work without "on_bad_lines='skip'"      ->      pandas.parser.CParserError: Error tokenizing data. C error:
-print(data_1.head())
 
-file_path = '/Users/kubagrabarczyk/Desktop/final_project_db.csv'
-db = []
-with open(file_path, 'r') as f:
-    reader = csv.reader(f)
-    for line in reader:
-        db.append(line)
+#
+# class DataFrame:
+#     def __init__(self, city):
+#         self.city = city
+#
+#     def chosen_city_data(self):
+#         df = pd.read_csv("/Users/kubagrabarczyk/Desktop/final_project_db.csv", delimiter=";", on_bad_lines='skip')
+#         return df[(df['Location'] == self.city)]
+#
+#     def list_available_positions(self):
+#         ...
+#
+# city_data = DataFrame('New Delhi')
+# print(city_data.chosen_city_data())
+#
+#
+# city_data = df.loc[df['Location'] == 'New Delhi']
 
-# pprint.pprint(db)
+# job_positions = []
+# for idx, row in city_data.iterrows():
+#     if row['Job Title'] not in job_positions:
+#         job_positions.append(row['Job Title'])
+#
+# print(job_positions)
 
+print(df.columns)
+number = df['Job Title'].value_counts()
+print(number)
+
+job_positions = []
+        for idx, row in city_data.iterrows():
+            if row['Job Title'] not in job_positions:
+                job_positions.append(row['Job Title'])
