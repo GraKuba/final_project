@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-class DataFrame:
+class Functions:
     def __init__(self, city):
         self.city = city
 
@@ -10,11 +10,11 @@ class DataFrame:
         city_data = df.loc[df['Location'] == self.city]
         return city_data
 
-    def average_income(self):
-        city_data = DataFrame.chosen_city_data(self)
+    def calculate_averages(self, group_by):
+        city_data = Functions.chosen_city_data(self)
         city_data['Total Salary'] = city_data['Salary'] * city_data['Salaries Reported']
-        salaries_reported = city_data.groupby('Job Title')['Salaries Reported'].sum()
-        total_salary = city_data.groupby('Job Title')['Total Salary'].sum()
+        salaries_reported = city_data.groupby(group_by)['Salaries Reported'].sum()
+        total_salary = city_data.groupby(group_by)['Total Salary'].sum()
         position = salaries_reported.index.tolist()
         amount = salaries_reported.tolist()
         salary = total_salary.tolist()
@@ -22,8 +22,19 @@ class DataFrame:
         averages = dict(zip(position, average))
         return averages
 
+
+class DataFrame(Functions):
+    def average_income(self):
+        dt = Functions.calculate_averages(self, 'Job Title')
+        return dt
+
     def highest_paying_companies(self):
-        ...
+        dt = Functions.calculate_averages(self, 'Company Name')
+        highest_values = sorted(dt, key=dt.get, reverse=True)[:3]
+        dct = {}
+        for value in highest_values:
+            dct[value] = dt[value]
+        return dct
 
     def salary_in_comparison(self):
         ...
@@ -36,7 +47,12 @@ class DataFrame:
         #     print(idx)
 
 
-data = DataFrame('New Delhi')
+data = DataFrame('Bangalore')
 
-positions_and_averages = data.average_income()
-print(positions_and_averages)
+# AVERAGES
+# positions_and_averages = data.average_income()
+# print(positions_and_averages)
+
+# HIGHEST PAYING COMPANIES
+highest_paying = data.highest_paying_companies()
+print(highest_paying)
