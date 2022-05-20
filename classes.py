@@ -69,8 +69,9 @@ class DataFrame(Functions):
         company_name = highest_payed_positions['Company Name'].tolist()
         position = highest_payed_positions['Job Title'].tolist()
         salary = highest_payed_positions['Salary'].tolist()
-        dct = {i: [j, k] for i, j, k in zip(company_name, position, salary)}
+        dct = {i: (j, k) for i, j, k in zip(company_name, position, salary)}
         return dct
+
 
 data = DataFrame('New Delhi')
 
