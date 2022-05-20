@@ -1,4 +1,5 @@
 import pandas as pd
+pd.options.mode.chained_assignment = None
 
 
 class Functions:
@@ -37,22 +38,58 @@ class DataFrame(Functions):
         return dct
 
     def salary_in_comparison(self):
-        ...
+        city_data = Functions.chosen_city_data(self)
+        average_income = DataFrame.average_income(self)
+        highest_paying = DataFrame.highest_paying_companies(self)
+        company_names = list(highest_paying.keys())
+        highest_salaries = []
+        for company_name in company_names:
+            company_data = city_data.loc[city_data['Company Name'] == company_name]
+            company_data['TotalSalary'] = company_data['Salary'] * company_data['Salaries Reported']
+            salaries_reported = company_data.groupby('Job Title')['Salaries Reported'].sum()
+            total_salary = company_data.groupby('Job Title')['TotalSalary'].sum()
+            position = salaries_reported.index.tolist()
+            amount = salaries_reported.tolist()
+            salary = total_salary.tolist()
+            average = [i / j for i, j in zip(salary, amount)]
+            averages = company_name, dict(zip(position, average))
+            highest_salaries.append(averages)
+        salary_comparison = []
+        for idx in highest_salaries:
+            for position_1 in average_income:
+                for position in idx[1]:
+                    if position_1 == position:
+                        temp = idx[0], (idx[1][position] / average_income[position_1])
+                        salary_comparison.append(temp)
+        return salary_comparison
 
     def most_profitable_position(self):
-        ...
+        city_data = Functions.chosen_city_data(self)
+        highest_payed_positions = city_data.loc[city_data.groupby('Job Title')['Salary'].idxmax(), :]
+        company_name = highest_payed_positions['Company Name'].tolist()
+        position = highest_payed_positions['Job Title'].tolist()
+        salary = highest_payed_positions['Salary'].tolist()
+        dct = {i: [j, k] for i, j, k in zip(company_name, position, salary)}
+        return dct
 
-        # todict = city_data.to_dict('records')
-        # for idx in todict:
-        #     print(idx)
-
-
-data = DataFrame('Bangalore')
+data = DataFrame('New Delhi')
 
 # AVERAGES
 # positions_and_averages = data.average_income()
 # print(positions_and_averages)
 
 # HIGHEST PAYING COMPANIES
-highest_paying = data.highest_paying_companies()
-print(highest_paying)
+# highest_paying = data.highest_paying_companies()
+# print(highest_paying)
+
+# SALARY IN COMPARISON
+# print(data.salary_in_comparison())
+
+# MOST PROFITABLE POSITION AT A COMPANY
+print(data.most_profitable_position())
+
+
+"TODICT FOR LATER USE"
+# todict = data.to_dict('records')
+# for idx in todict:
+#     print(idx)
