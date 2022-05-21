@@ -87,7 +87,7 @@ data = DataFrame('New Delhi')
 # print(data.salary_in_comparison())
 
 # MOST PROFITABLE POSITION AT A COMPANY
-print(data.most_profitable_position())
+# print(data.most_profitable_position())
 
 
 "TODICT FOR LATER USE"
