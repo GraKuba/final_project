@@ -20,14 +20,15 @@ class Functions:
         amount = salaries_reported.tolist()
         salary = total_salary.tolist()
         average = [i / j for i, j in zip(salary, amount)]
-        averages = dict(zip(position, average))
+        rounded_average = [round(num) for num in average]
+        averages = dict(zip(position, rounded_average))
         return averages
 
 
 class DataFrame(Functions):
     def average_income(self):
         dt = Functions.calculate_averages(self, 'Job Title')
-        return dt
+        return [dt]
 
     def highest_paying_companies(self):
         dt = Functions.calculate_averages(self, 'Company Name')
@@ -39,7 +40,7 @@ class DataFrame(Functions):
 
     def salary_in_comparison(self):
         city_data = Functions.chosen_city_data(self)
-        average_income = DataFrame.average_income(self)
+        average_income = DataFrame.average_income(self)[0]
         highest_paying = DataFrame.highest_paying_companies(self)
         company_names = list(highest_paying.keys())
         highest_salaries = []
@@ -59,7 +60,7 @@ class DataFrame(Functions):
             for position_1 in average_income:
                 for position in idx[1]:
                     if position_1 == position:
-                        temp = idx[0], (idx[1][position] / average_income[position_1])
+                        temp = {idx[0]: round((idx[1][position] / average_income[position_1]), 2)}
                         salary_comparison.append(temp)
         return salary_comparison
 
@@ -69,8 +70,9 @@ class DataFrame(Functions):
         company_name = highest_payed_positions['Company Name'].tolist()
         position = highest_payed_positions['Job Title'].tolist()
         salary = highest_payed_positions['Salary'].tolist()
-        dct = {i: (j, k) for i, j, k in zip(company_name, position, salary)}
-        return dct
+        rounded_salary = [round(num) for num in salary]
+        dct = {i: {j: k} for i, j, k in zip(company_name, position, rounded_salary)}
+        return [dct]
 
 
 data = DataFrame('New Delhi')
@@ -87,7 +89,7 @@ data = DataFrame('New Delhi')
 # print(data.salary_in_comparison())
 
 # MOST PROFITABLE POSITION AT A COMPANY
-# print(data.most_profitable_position())
+print(data.most_profitable_position())
 
 
 "TODICT FOR LATER USE"
