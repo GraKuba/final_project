@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Earnings Comparison</title>
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 </head>
 <body>
+
+<h2>Select a city:</h2>
 
 <div class="wrapper">
     <form action='/' method = 'post'>
@@ -15,8 +20,112 @@
                 <option value="Hyderabad" name = "city">Hyderabad</option>
                 <option value="New Delhi" name = "city">New Delhi</option>
                 <option value="Mumbai" name = "city">Mumbai</option>
-                <input type='submit' value='Submit'>
+                <input class="btn btn-success btn-sm" type='submit' value='Submit'>
             </select>
         </p>
+
+        <br/>
+
+        {% if city %}
+        <h3>{{city}} {{statements[0]}}</h3>
+
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Average Salary (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for dict_item in positions_and_averages %}
+                {% for key, value in dict_item.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value}}</td>
+            </tr>
+                  {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table>
+
+        <br />
+            <br />
+
+
+        <h3>{{city}} {{statements[1]}}</h3>
+
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Average Salary (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for dict_item in highest_paying %}
+        {% for key, value in dict_item.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value}}</td>
+            </tr>
+                  {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table>
+
+        <br />
+            <br />
+
+
+        <h3>{{city}} {{statements[2]}}</h3>
+
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Salary (%) above average</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for dict_item in salary_comparison %}
+        {% for key, value in dict_item.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value * 100}}</td>
+            </tr>
+                  {% endfor %}
+          {% endfor %}
+          </tbody>
+        </table>
+
+        <br />
+            <br />
+
+        <h3>{{city}} {{statements[3]}}</h3>
+
+                <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Position</th>
+              <th>Salary (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+         {% for dict_item in most_profitable %}
+            {% for key, value in dict_item.items() %}
+                {% for k, v in value.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{k}}</td>
+              <td>{{v}}</td>
+            </tr>
+                  {% endfor %}
+                {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+
 </body>
 </html>

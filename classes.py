@@ -51,9 +51,11 @@ class DataFrame(Functions):
             total_salary = company_data.groupby('Job Title')['TotalSalary'].sum()
             position = salaries_reported.index.tolist()
             amount = salaries_reported.tolist()
+            print(amount)
             salary = total_salary.tolist()
+            print(salary)
             average = [i / j for i, j in zip(salary, amount)]
-            averages = company_name, dict(zip(position, average))
+            averages = company_name, dict(zip(position, [(sum((average)) / len(average))]))
             highest_salaries.append(averages)
         salary_comparison = []
         for idx in highest_salaries:
@@ -75,7 +77,7 @@ class DataFrame(Functions):
         return [dct]
 
 
-data = DataFrame('New Delhi')
+data = DataFrame('Mumbai')
 
 # AVERAGES
 # positions_and_averages = data.average_income()
@@ -89,10 +91,9 @@ data = DataFrame('New Delhi')
 # print(data.salary_in_comparison())
 
 # MOST PROFITABLE POSITION AT A COMPANY
-print(data.most_profitable_position())
+# print(data.most_profitable_position())
 
 
-"TODICT FOR LATER USE"
 # todict = data.to_dict('records')
 # for idx in todict:
 #     print(idx)
