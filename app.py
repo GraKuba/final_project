@@ -30,3 +30,5 @@ def index():
     return render_template('index.html', statements=statements, city=city,
                            positions_and_averages=positions_and_averages, highest_paying=[highest_paying],
                            salary_comparison=salary_comparison, most_profitable=most_profitable)
+
+# working
